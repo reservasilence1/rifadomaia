@@ -270,7 +270,7 @@
                 };
 
                 // Continua chamando seu endpoint local (proxy) pra evitar CORS e esconder chave
-                const res = await fetch('api/pix', {
+                const res = await fetch('/api/pix', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
