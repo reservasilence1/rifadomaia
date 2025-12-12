@@ -295,7 +295,7 @@
                     localStorage.setItem('pix', JSON.stringify(save));
 
                     const qs = window.location.search;
-                    window.location.href = 'payment.html' + (qs ? qs : '');
+                    window.location.href = '/pagamento/payment.html' + (qs ? qs : '');
                 } else {
                     alert((j && j.error) ? j.error : 'Não foi possível gerar o PIX.');
                 }
