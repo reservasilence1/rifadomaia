@@ -1,49 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head>
     <meta charset="utf-8">
-    <!-- Meta Pixel Code -->
-    <script>
-      !(function (f, b, e, v, n, t, s) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
-      );
-      fbq("init", "830015959480151");
-      fbq("track", "PageView");
-    </script>
-    <noscript><img
-        height="1"
-        width="1"
-        style="display: none"
-        src="https://www.facebook.com/tr?id=830015959480151&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- End Meta Pixel Code -->
-    <script src="js/latest.js" data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" async="" defer=""></script>
-    <script>
-      window.pixelId = "6935be0f70235d8601e561e2";
-      var a = document.createElement("script");
-      a.setAttribute("async", "");
-      a.setAttribute("defer", "");
-      a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-      document.head.appendChild(a);
-    </script>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="shortcut icon" href="/rifa/images/logo.png" type="image/x-icon">
     <title>Prêmios do Carlinhos</title>
@@ -1064,7 +1021,8 @@
       const btnMinhas2 = document.getElementById("btnMinhas2");
       if (btnMinhas2) btnMinhas2.addEventListener("click", abrirMinhasCompras);
 
-      let valorCotaCent = 50;
+      // ✅ OPÇÃO A: valor fixo (R$ 2,99 = 299 centavos) e sem fetch
+      let valorCotaCent = 299;
       let MIN_QTD = 3;
 
       const inp = document.getElementById("inpQtd");
@@ -1126,36 +1084,8 @@
         if (txtValorMob) txtValorMob.textContent = brl(cent / 100);
       }
 
-      async function carregarPreco() {
-        try {
-          const r = await fetch("cotas.json", { cache: "no-store" });
-          const j = await r.json();
-          if (j && j.valor_cota_centavos)
-            valorCotaCent = parseInt(j.valor_cota_centavos, 10);
-          if (j && j.min_qtd) MIN_QTD = parseInt(j.min_qtd, 10);
-          if (j && Array.isArray(j.raspadinha_regras)) {
-            const cards = document.querySelectorAll(".raspaCard");
-            j.raspadinha_regras.slice(0, cards.length).forEach((reg, idx) => {
-              const card = cards[idx];
-              if (!card) return;
-              if (reg.inc) card.dataset.inc = String(reg.inc);
-              if (reg.raspadinhas) card.dataset.rasp = String(reg.raspadinhas);
-              const badge = card.querySelector(".raspaBadge");
-              if (badge && reg.raspadinhas)
-                badge.textContent =
-                  "Recebe " + reg.raspadinhas + " raspadinhas";
-              const topB = card.querySelector(".raspaTxt .top b");
-              if (topB && reg.a_partir)
-                topB.textContent = reg.a_partir + " números";
-              const sub = card.querySelector(".raspaTxt .sub");
-              if (sub && reg.raspadinhas)
-                sub.textContent =
-                  reg.raspadinhas + " chances de contemplação na Raspadinha";
-              const btn = card.querySelector(".raspaBtn");
-              if (btn && reg.inc) btn.textContent = "+" + reg.inc;
-            });
-          }
-        } catch (e) {}
+      // ✅ SEM fetch: só inicializa UI com valores fixos
+      function carregarPreco() {
         const tagUnit = document.getElementById("tagUnit");
         if (tagUnit) tagUnit.textContent = brl(valorCotaCent / 100);
         atualizarCombos();
@@ -1399,6 +1329,5 @@
         });
       });
     </script>
-  
 
 </body></html>
