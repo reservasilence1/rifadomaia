@@ -1,6 +1,7 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
   <meta charset="utf-8">
-
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Pagamento PIX</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,6 +82,22 @@
       return d.slice(0,3) + ".***.***-" + d.slice(-2);
     }
 
+    function ensureDataUriBase64(maybeBase64){
+      if (!maybeBase64) return "";
+      if (/^data:image\//i.test(maybeBase64)) return maybeBase64;
+      // base64 “puro”
+      if (/^[A-Za-z0-9+/=]+$/.test(maybeBase64)) return "data:image/png;base64," + maybeBase64;
+      // pode ser URL
+      return maybeBase64;
+    }
+
+    function setQrFromPixCode(pixCode){
+      // gera QR a partir do texto copia-e-cola (mais confiável)
+      // (quickchart às vezes falha/limita; qrserver costuma ser mais estável)
+      const url = "https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=" + encodeURIComponent(pixCode);
+      document.getElementById("qrImg").src = url;
+    }
+
     const clienteRaw = localStorage.getItem("cliente");
     const pixRaw = localStorage.getItem("pix");
 
@@ -89,11 +106,21 @@
     const cliente = JSON.parse(clienteRaw || "{}");
     const pixObj = JSON.parse(pixRaw || "{}");
 
-    // Aceita: {pix:{qrcode,transactionId}} (novo) OU {pixCode,transactionId} (API) OU {pix:{qrcode}} (antigo)
+    // Pega o “copia e cola”
     const qrcode =
       pixObj?.pix?.qrcode ||
       pixObj?.pixCode ||
       pixObj?.pixcode ||
+      pixObj?.qrcode ||
+      "";
+
+    // Se existir imagem pronta (caso a API mande)
+    const qrImgApi =
+      pixObj?.pix?.qrcode_image ||
+      pixObj?.pix?.qrCodeImage ||
+      pixObj?.qrCodeImage ||
+      pixObj?.qrCodeUrl ||
+      pixObj?.pix?.qrCodeUrl ||
       "";
 
     const transactionId =
@@ -107,11 +134,18 @@
       nomeCurto ? (nomeCurto + " • CPF " + maskCpf(cliente.cpf)) : "";
 
     document.getElementById("valorLinha").textContent = brl(cliente.valor || 0);
-    document.getElementById("pixCode").textContent = qrcode || "";
+    document.getElementById("pixCode").textContent = qrcode || "PIX não encontrado. Volte e gere novamente.";
 
-    // QR
-    document.getElementById("qrImg").src =
-      "https://quickchart.io/qr?text=" + encodeURIComponent(qrcode || "");
+    // QR: tenta imagem da API; se não tiver, gera a partir do copia e cola
+    const qrFixed = ensureDataUriBase64(qrImgApi);
+    if (qrFixed) {
+      document.getElementById("qrImg").src = qrFixed;
+    } else if (qrcode) {
+      setQrFromPixCode(qrcode);
+    } else {
+      // evita ícone de imagem quebrada
+      document.getElementById("qrImg").removeAttribute("src");
+    }
 
     // Referência
     if (transactionId) {
@@ -122,11 +156,11 @@
 
     // Botões
     document.getElementById("copiar").addEventListener("click", async () => {
+      if (!qrcode) { alert("Código Pix não encontrado."); return; }
       try {
         await navigator.clipboard.writeText(qrcode);
         alert("Código Pix copiado!");
       } catch (e) {
-        // fallback simples
         const ta = document.createElement("textarea");
         ta.value = qrcode;
         document.body.appendChild(ta);
@@ -138,8 +172,8 @@
     });
 
     document.getElementById("btnMinhas").addEventListener("click", () => {
-      // ajuste se você tiver outra página
-      window.location.href = "index.html";
+      // se quiser, aponte para sua “sucesso.html” (minhas compras)
+      window.location.href = "sucesso.html";
     });
 
     const statusEl = document.getElementById("statusLinha");
@@ -147,6 +181,7 @@
     let checking = false;
     async function checarStatus() {
       if (checking) return;
+
       if (!transactionId) {
         statusEl.textContent = "Status: aguardando referência da transação...";
         return;
@@ -154,9 +189,10 @@
 
       checking = true;
       try {
-        const r = await fetch("/api/pix-status?id=" + encodeURIComponent(pixId)), {
+        const r = await fetch("/api/pix-status?id=" + encodeURIComponent(transactionId), {
           cache: "no-store"
         });
+
         const s = await r.json().catch(() => null);
 
         if (s?.status) {
@@ -184,4 +220,5 @@
     checarStatus();
     setInterval(checarStatus, 4000);
   </script>
-</body></html>
+</body>
+</html>
