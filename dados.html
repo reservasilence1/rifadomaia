@@ -1,341 +1,56 @@
 <!DOCTYPE html><html lang="pt-BR"><head>
     <meta charset="utf-8">
-     
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Método de pagamento</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #f3f5f4;
-            --card: #fff;
-            --borda: #e8ebea;
-            --verde: #42761d;
-            --sub: #6b776a;
-            --txt: #1f2a1e
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        body {
-            margin: 0;
-            background: var(--bg);
-            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-            color: var(--txt)
-        }
-
-        .topoShell {
-            max-width: 880px;
-            margin: 0 auto;
-            background: #fff;
-            border-radius: 0 0 14px 14px;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, .12)
-        }
-
-        .topoBarra {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 14px;
-            border-bottom: 1px solid #e5e7eb
-        }
-
-        .btnVoltar {
-            width: 32px;
-            height: 32px;
-            border-radius: 999px;
-            border: none;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer
-        }
-
-        .btnVoltar svg {
-            width: 18px;
-            height: 18px;
-            stroke: #111827
-        }
-
-        .topoLogo {
-            height: 34px
-        }
-
-        .topoSpacer {
-            width: 32px;
-            height: 32px
-        }
-
-        .topoBanner {
-            width: 100%;
-            border-radius: 0 0 14px 14px;
-            overflow: hidden
-        }
-
-        .topoBanner img {
-            display: block;
-            width: 100%;
-            height: auto
-        }
-
-        .wrapper {
-            max-width: 880px;
-            margin: 16px auto 28px;
-            padding: 0 16px
-        }
-
-        .breadcrumb {
-            max-width: 720px;
-            margin: 0 auto 10px auto;
-            color: var(--sub);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 8px
-        }
-
-        .breadcrumb a {
-            color: var(--sub);
-            text-decoration: none
-        }
-
-        .breadcrumb span.sep {
-            opacity: .6
-        }
-
-        .card {
-            max-width: 720px;
-            margin: 0 auto;
-            background: var(--card);
-            border: 1px solid var(--borda);
-            border-radius: 14px;
-            box-shadow: 0 8px 24px rgba(16, 24, 40, .06);
-            padding: 18px
-        }
-
-        .tituloSecao {
-            font-size: 18px;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 14px
-        }
-
-        .topRow {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            background: #f8faf7;
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-            margin-bottom: 16px
-        }
-
-        .userBox {
-            display: flex;
-            flex-direction: column
-        }
-
-        .small {
-            font-size: 13px;
-            color: var(--sub)
-        }
-
-        .link {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 13px
-        }
-
-        .method {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 2px solid #2563eb;
-            background: #eef3ff;
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 4px
-        }
-
-        .method .left {
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .radio {
-            width: 20px;
-            height: 20px;
-            border-radius: 999px;
-            border: 2px solid #2563eb;
-            background: radial-gradient(circle at center, #2563eb 55%, #fff 55%);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, .15)
-        }
-
-        .summary {
-            margin-top: 18px;
-            border-top: 1px solid var(--borda);
-            padding-top: 12px
-        }
-
-        .total {
-            font-weight: 800;
-            font-size: 18px;
-            color: #111
-        }
-
-        .cotas {
-            font-size: 15px;
-            color: #111;
-            margin-top: 6px
-        }
-
-        .btn {
-            width: 100%;
-            height: 48px;
-            border-radius: 10px;
-            border: 0;
-            background: var(--verde);
-            color: #fff;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px
-        }
-
-        .btn:disabled {
-            opacity: .7;
-            cursor: not-allowed
-        }
-
-        .spin {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #fff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: g 1s linear infinite;
-            display: none
-        }
-
-        .btn.loading .spin {
-            display: inline-block
-        }
-
-        @keyframes g {
-            to {
-                transform: rotate(360deg)
-            }
-        }
-
-        .cookies {
-            max-width: 560px;
-            margin: 14px auto 0 auto;
-            text-align: center;
-            color: var(--sub);
-            font-size: 12px
-        }
-
-        .rodapeLogo {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px
-        }
-
-        .rodapeLogo img {
-            height: 75px;
-            opacity: .9
-        }
-
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(255, 255, 255, .6);
-            backdrop-filter: blur(1px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999
-        }
-
-        .overlay.show {
-            display: flex
-        }
-
-        .loader {
-            width: 46px;
-            height: 46px;
-            border: 4px solid #cfe0ca;
-            border-top-color: var(--verde);
-            border-radius: 50%;
-            animation: g 1s linear infinite
-        }
-
-        .upsellBox {
-            margin-top: 18px;
-            border: 1px solid #e4e7ec;
-            border-radius: 10px;
-            overflow: hidden;
-            background: #fff
-        }
-
-        .upsellTitle {
-            background: #f7931a;
-            color: #fff;
-            font-weight: 600;
-            padding: 12px;
-            text-align: center;
-            font-size: 15px
-        }
-
-        .upsellContent {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px;
-            cursor: pointer
-        }
-
-        .upsellText {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1f2a1e
-        }
-
-        .upsellCheckbox {
-            appearance: none;
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #d0d5dd;
-            border-radius: 4px;
-            background: #fff;
-            cursor: pointer;
-            position: relative
-        }
-
-        .upsellCheckbox:checked {
-            background: #f7931a;
-            border-color: #f7931a
-        }
-
-        .upsellCheckbox:checked::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-size: 18px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.0' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m4.5 12.75 6 6 9-11.75'/%3E%3C/svg%3E")
-        }
+        :root { --bg:#f3f5f4; --card:#fff; --borda:#e8ebea; --verde:#42761d; --sub:#6b776a; --txt:#1f2a1e }
+        *{box-sizing:border-box}
+        body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--txt)}
+        .topoShell{max-width:880px;margin:0 auto;background:#fff;border-radius:0 0 14px 14px;box-shadow:0 6px 18px rgba(15,23,42,.12)}
+        .topoBarra{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #e5e7eb}
+        .btnVoltar{width:32px;height:32px;border-radius:999px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
+        .btnVoltar svg{width:18px;height:18px;stroke:#111827}
+        .topoLogo{height:34px}
+        .topoSpacer{width:32px;height:32px}
+        .topoBanner{width:100%;border-radius:0 0 14px 14px;overflow:hidden}
+        .topoBanner img{display:block;width:100%;height:auto}
+        .wrapper{max-width:880px;margin:16px auto 28px;padding:0 16px}
+        .breadcrumb{max-width:720px;margin:0 auto 10px auto;color:var(--sub);font-size:13px;display:flex;align-items:center;gap:8px}
+        .breadcrumb a{color:var(--sub);text-decoration:none}
+        .breadcrumb span.sep{opacity:.6}
+        .card{max-width:720px;margin:0 auto;background:var(--card);border:1px solid var(--borda);border-radius:14px;box-shadow:0 8px 24px rgba(16,24,40,.06);padding:18px}
+        .tituloSecao{font-size:18px;font-weight:700;color:#111827;margin-bottom:14px}
+        .topRow{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f8faf7;border:1px solid var(--borda);border-radius:10px;margin-bottom:16px}
+        .userBox{display:flex;flex-direction:column}
+        .small{font-size:13px;color:var(--sub)}
+        .link{color:#1a73e8;text-decoration:none;font-size:13px}
+        .method{display:flex;align-items:center;justify-content:space-between;border:2px solid #2563eb;background:#eef3ff;border-radius:12px;padding:14px;margin-top:4px}
+        .method .left{display:flex;align-items:center;gap:12px}
+        .radio{width:20px;height:20px;border-radius:999px;border:2px solid #2563eb;background:radial-gradient(circle at center,#2563eb 55%,#fff 55%);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+        .summary{margin-top:18px;border-top:1px solid var(--borda);padding-top:12px}
+        .total{font-weight:800;font-size:18px;color:#111}
+        .cotas{font-size:15px;color:#111;margin-top:6px}
+        .btn{width:100%;height:48px;border-radius:10px;border:0;background:var(--verde);color:#fff;font-weight:800;cursor:pointer;margin-top:18px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+        .btn:disabled{opacity:.7;cursor:not-allowed}
+        .spin{width:18px;height:18px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:g 1s linear infinite;display:none}
+        .btn.loading .spin{display:inline-block}
+        @keyframes g{to{transform:rotate(360deg)}}
+        .cookies{max-width:560px;margin:14px auto 0 auto;text-align:center;color:var(--sub);font-size:12px}
+        .rodapeLogo{display:flex;justify-content:center;margin-top:10px}
+        .rodapeLogo img{height:75px;opacity:.9}
+        .overlay{position:fixed;inset:0;background:rgba(255,255,255,.6);backdrop-filter:blur(1px);display:none;align-items:center;justify-content:center;z-index:9999}
+        .overlay.show{display:flex}
+        .loader{width:46px;height:46px;border:4px solid #cfe0ca;border-top-color:var(--verde);border-radius:50%;animation:g 1s linear infinite}
+        .upsellBox{margin-top:18px;border:1px solid #e4e7ec;border-radius:10px;overflow:hidden;background:#fff}
+        .upsellTitle{background:#f7931a;color:#fff;font-weight:600;padding:12px;text-align:center;font-size:15px}
+        .upsellContent{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer}
+        .upsellText{font-size:15px;font-weight:600;color:#1f2a1e}
+        .upsellCheckbox{appearance:none;-webkit-appearance:none;width:20px;height:20px;border:2px solid #d0d5dd;border-radius:4px;background:#fff;cursor:pointer;position:relative}
+        .upsellCheckbox:checked{background:#f7931a;border-color:#f7931a}
+        .upsellCheckbox:checked::after{content:'';position:absolute;inset:0;background-size:18px;background-repeat:no-repeat;background-position:center;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='2.0' stroke='black'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m4.5 12.75 6 6 9-11.75'/%3E%3C/svg%3E")}
     </style>
 </head>
 
@@ -420,42 +135,56 @@
     <div id="overlay" class="overlay">
         <div class="loader"></div>
     </div>
+
     <script>
         function maskCpfDisplay(c) {
             const d = String(c).replace(/\D/g, '');
             if (d.length < 5) return c;
-            return d.slice(0, 3) + '.***.***-' + d.slice(-2)
+            return d.slice(0, 3) + '.***.***-' + d.slice(-2);
         }
 
         function paramsToObj() {
             const p = new URLSearchParams(window.location.search);
             const o = {};
             p.forEach((v, k) => o[k] = v);
-            return o
+            return o;
         }
 
         function brl(v) {
-            return 'R$ ' + Number(v).toFixed(2).replace('.', ',')
+            return 'R$ ' + Number(v).toFixed(2).replace('.', ',');
+        }
+
+        function normalizePhoneBR(phone) {
+            const d = String(phone || '').replace(/\D/g, '');
+            // Aceita 55 + DDD + número, ou só DDD+numero
+            if (!d) return '';
+            if (d.length >= 12 && d.startsWith('55')) return d;
+            if (d.length >= 10 && d.length <= 11) return '55' + d;
+            return d;
+        }
+
+        function buildUtmString(trackingObj) {
+            // Monta utm= "utm_source=...&utm_medium=..."; se não tiver UTM, manda vazio
+            const keys = Object.keys(trackingObj || {});
+            const utmPairs = [];
+            for (const k of keys) {
+                if (/^utm_/i.test(k)) {
+                    utmPairs.push(encodeURIComponent(k) + '=' + encodeURIComponent(String(trackingObj[k])));
+                }
+            }
+            return utmPairs.join('&');
         }
 
         const raw = localStorage.getItem('cliente');
-        if (!raw) {
-            window.location.href = 'index.html'
-        }
+        if (!raw) window.location.href = 'index.html';
 
         let cliente = JSON.parse(raw || '{}');
 
         const valorLS = localStorage.getItem('valor');
         const cotasLS = localStorage.getItem('cotas');
 
-        if (valorLS) {
-            const vReais = Number(valorLS) / 100;
-            cliente.valor = vReais
-        }
-
-        if (cotasLS) {
-            cliente.cotas = Number(cotasLS)
-        }
+        if (valorLS) cliente.valor = Number(valorLS) / 100;
+        if (cotasLS) cliente.cotas = Number(cotasLS);
 
         localStorage.setItem('cliente', JSON.stringify(cliente));
 
@@ -477,12 +206,12 @@
             try {
                 const r = await fetch('../cotas.json', { cache: 'no-store' });
                 const j = await r.json();
-                if (j && j.valor_cota_centavos) valorCota = parseInt(j.valor_cota_centavos, 10)
-            } catch (e) { }
+                if (j && j.valor_cota_centavos) valorCota = parseInt(j.valor_cota_centavos, 10);
+            } catch (e) {}
             const centavos = Math.round(Number(valorBase || 0) * 100);
             const qtd = Math.floor(centavos / valorCota);
             cotasBase = qtd;
-            atualizarResumo()
+            atualizarResumo();
         }
 
         function atualizarResumo() {
@@ -493,17 +222,16 @@
             qtdCotasEl.textContent = String(cotasTotal);
             cliente.valor = total;
             cliente.cotas = cotasTotal;
-            localStorage.setItem('cliente', JSON.stringify(cliente))
+            localStorage.setItem('cliente', JSON.stringify(cliente));
         }
 
         carregarCotas();
-
         upsellCheck.addEventListener('change', atualizarResumo);
 
         document.getElementById('trocar').addEventListener('click', e => {
             e.preventDefault();
             localStorage.removeItem('cliente');
-            window.location.href = 'index.html'
+            window.location.href = 'index.html';
         });
 
         const btn = document.getElementById('confirmar');
@@ -517,51 +245,70 @@
             btn.classList.add('loading');
             btn.querySelector('.t').textContent = 'Gerando pagamento...';
             overlay.classList.add('show');
+
             try {
                 const tracking = paramsToObj();
                 const valorCentavos = Math.round(Number(cliente.valor || 0) * 100);
 
+                // Payload NO FORMATO DA DUTTYFY
                 const payload = {
-                    valor: valorCentavos,
-                    tracking,
-                    cliente: {
-                        nome: cliente.nome || '',
-                        email: cliente.email || '',
-                        celular: cliente.celular || '',
-                        cpf: cliente.cpf || '',
-                        cotas: cliente.cotas || 0
-                    }
+                    amount: valorCentavos, // (centavos) ex: R$2,00 => 200
+                    description: "Pagamento via Pix",
+                    customer: {
+                        name: cliente.nome || "",
+                        document: String(cliente.cpf || "").replace(/\D/g, ""),
+                        email: cliente.email || "",
+                        phone: normalizePhoneBR(cliente.celular || "")
+                    },
+                    item: {
+                        title: "Pedido - Prêmios do Carlinhos",
+                        price: valorCentavos,
+                        quantity: 1
+                    },
+                    paymentMethod: "PIX",
+                    utm: buildUtmString(tracking)
                 };
 
-                const res = await fetch('api/pix.php', {
+                // Continua chamando seu endpoint local (proxy) pra evitar CORS e esconder chave
+                const res = await fetch('api/pix.js', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                let j = null;
-                try { j = await res.json() } catch (e) { }
+                const j = await res.json().catch(() => null);
 
-                if (j && j.pix && j.pix.qrcode) {
-                    localStorage.setItem('pix', JSON.stringify(j));
+                // Aceita tanto formato antigo (pix.qrcode) quanto novo (pixCode)
+                const pixCode = j?.pix?.qrcode || j?.pixCode || j?.pixcode;
+                const transactionId = j?.transactionId || j?.transactionID || j?.pix?.transactionId;
+
+                if (pixCode) {
+                    // Padroniza o que fica salvo pro payment.html
+                    const save = {
+                        pix: {
+                            qrcode: pixCode,
+                            transactionId: transactionId || null,
+                            status: j?.status || "PENDING"
+                        },
+                        raw: j
+                    };
+                    localStorage.setItem('pix', JSON.stringify(save));
+
                     const qs = window.location.search;
-                    window.location.href = 'payment.html' + (qs ? qs : '')
+                    window.location.href = 'payment.html' + (qs ? qs : '');
                 } else {
-                    alert('Não foi possível gerar o PIX.')
+                    alert((j && j.error) ? j.error : 'Não foi possível gerar o PIX.');
                 }
+
             } catch (e) {
-            alert('Erro ao gerar pagamento.')
+                alert('Erro ao gerar pagamento.');
             } finally {
                 overlay.classList.remove('show');
                 btn.classList.remove('loading');
                 btn.querySelector('.t').textContent = 'Confirmar compra';
                 btn.disabled = false;
-                travado = false
+                travado = false;
             }
         });
     </script>
-
-
-
-
 </body></html>
