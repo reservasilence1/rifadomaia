@@ -154,7 +154,7 @@
 
       checking = true;
       try {
-        const r = await fetch("/api/pix-status?transactionId=" + encodeURIComponent(transactionId), {
+        const r = await fetch("/api/pix-status?id=" + encodeURIComponent(pixId)), {
           cache: "no-store"
         });
         const s = await r.json().catch(() => null);
